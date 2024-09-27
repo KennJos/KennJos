@@ -6,14 +6,13 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
 camera.position.z = 7;
 
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({alpha:true});
 renderer.setSize(window.innerWidth,window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 const geometry = new THREE.BoxGeometry(1,1,1);
 const material = new THREE.MeshBasicMaterial( { color: 0xFFA500 } );
 const cube = new THREE.Mesh(geometry,material);
-//scene.add(cube);
 
 const geo2 = new THREE.BoxGeometry(1,1,4);
 const mats = new THREE.MeshBasicMaterial({color:0xFFA500});
@@ -29,14 +28,11 @@ function animate() {
 	renderer.render(scene,camera);
 }
 
-if ( WebGL.isWebGL2Available() ) {
 
-	// Initiate function or other initializations here
+//Check if WebGL2 is available on user's browser
+if (WebGL.isWebGL2Available()) {
 	renderer.setAnimationLoop(animate);
-
 } else {
-
 	const warning = WebGL.getWebGL2ErrorMessage();
-	document.getElementById( 'container' ).appendChild( warning );
-
+	document.getElementById('container').appendChild(warning);
 }
