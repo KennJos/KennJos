@@ -1,12 +1,24 @@
+html, body {
+   margin: 0;
+   padding: 0;
+}
+
 header {
-   margin-top: 25px;
-   margin-bottom: 40px;
+   margin-top: 15px;
 }
 
 body {
-   background-color: darkslateblue;
+   background-color: #660066;
    text-decoration: none;
 }
+
+img {
+   display: block;
+   margin-left: auto;
+   margin-right: auto;
+   width: 50%;
+}
+
 
 .logo{
    display:block;
@@ -20,34 +32,44 @@ body {
 }
 
 nav{
-   display:block;
-   float:left;
+   display:flex;
    position:fixed;
+   list-style-type: none;
+   background: black;
+   font-family: "Ubuntu", sans-serif;
+   font-weight: 300;
+   font-size: 40px;
+   width: 100vw;
+   height: 55px;
+   border-color:grey;
+   border-width: 1px;
+   border-left: 0px;
+   border-right: 0px;
+   border-style: solid;
+   overflow: hidden;
 }
 
-.terminal {
-  background: black;
-  font-family: "Ubuntu", sans-serif;
-  font-weight: 300;
-  font-size: 40px;
-  width: 30%;
-  border-color: white;
-  border-width: 5px;
-  border-top-width: 20px;
-  border-style: solid;
-  margin-left: 50px;
+
+li {
+   flex-grow:1;
+   transition: all 0.8s cubic-bezier(0,0,0.45,0);
+}
+
+li:hover{
+   flex:5;
 }
 
 li a {
-  display: block;
-  padding: 5px;
+
+  text-align: center;
+  
 }
 
 .nav-link {
    text-decoration: none;
-   margin-bottom: 15%;
+   color: #33ff33;
 }
 
-.nav-link:hover {
+/*.nav-link:hover {
    font-size: 45px;
 }
