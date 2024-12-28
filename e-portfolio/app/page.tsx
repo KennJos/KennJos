@@ -1,51 +1,78 @@
 'use client';
 
 import * as THREE from 'three';
-import WebGL from 'three/addons/capabilities/WebGL.js';
+import WebGL from 'three/examples/jsm/capabilities/WebGL.js';
 import { useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Home() {
   useEffect(() => {
+    //Check WebGL compatibility first
+    if (!WebGL.isWebGL2Available()) {
+      const warning = WebGL.getWebGL2ErrorMessage();
+      const container = document.getElementById('three-container');
+      if (container) {
+        container.appendChild(warning);
+      }
+      return;
+    }
+
+    //Three.js setup
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer();
     
     renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('container')?.appendChild(renderer.domElement);
+    const container = document.getElementById('three-container');
+    if (container) {
+      container.appendChild(renderer.domElement);
+    }
 
-    const geo1 = new THREE.BoxGeometry();
-    const mat1 = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geo1, mat1);
-    cube.position.z = -5;
-
+    //Testing stuff
+    const geometry = new THREE.BoxGeometry();
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const cube = new THREE.Mesh(geometry, material);
+    
     const geo2 = new THREE.IcosahedronGeometry();
     const mats = new THREE.MeshBasicMaterial({ color: 0xFFA500 });
     const icosahedron = new THREE.Mesh(geo2, mats);
+    
     icosahedron.position.x = 3;
-
     scene.add(cube, icosahedron);
 
-    const animate = () => {
+    
+    camera.position.z = 5;
+
+    //Animation function
+    function animate() {
+      requestAnimationFrame(animate);
+      
       cube.rotation.x += 0.01;
       cube.rotation.y += 0.01;
+      
       renderer.render(scene, camera);
-    };
-
-    if (WebGL.isWebGL2Available()) {
-      renderer.setAnimationLoop(animate);
-    } else {
-      const warning = WebGL.getWebGL2ErrorMessage();
-      document.getElementById('container')?.appendChild(warning);
     }
 
+    
+    animate();
+
+    //Cleanup
     return () => {
+      if (container) {
+        container.removeChild(renderer.domElement);
+      }
+      geometry.dispose();
+      material.dispose();
+      geo2.dispose();
+      mats.dispose();
       renderer.dispose();
     };
   }, []);
 
   return (
-    <main>
-      <div id="container" />
+    <main className="min-h-screen">
+      <div id="three-container" className="fixed top-0 left-0 w-screen h-screen -z-10" />
     </main>
   );
 }
